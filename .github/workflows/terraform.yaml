@@ -3,10 +3,6 @@ name: terraform-quixplatform-aws  CI/CD
 on:
   push:
     branches: [main, dev]
-    paths:
-      - "modules/quix-eks/**"
-      - "modules/quix-eks-dependencies/**"
-      - ".github/workflows/terraform-module.yml"
   workflow_dispatch:
     inputs:
       bump:
