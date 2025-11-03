@@ -240,10 +240,10 @@ Each example includes detailed documentation and can be deployed directly for te
 
 The modules support two primary networking modes:
 
-| Mode | Description | Use Case |
-|------|-------------|----------|
-| **Managed VPC** | Module creates VPC with subnets, NAT gateway, and routing | New deployments, isolated environments |
-| **Existing VPC** | Integrate with pre-existing network infrastructure | Shared environments, corporate networks |
+| Mode             | Description                                               | Use Case                                |
+| ---------------- | --------------------------------------------------------- | --------------------------------------- |
+| **Managed VPC**  | Module creates VPC with subnets, NAT gateway, and routing | New deployments, isolated environments  |
+| **Existing VPC** | Integrate with pre-existing network infrastructure        | Shared environments, corporate networks |
 
 ### Storage Configuration
 
@@ -275,13 +275,13 @@ See [BYO_VPC_GUIDE.md](BYO_VPC_GUIDE.md) for comprehensive requirements and conf
 
 Infrastructure costs vary based on configuration. A typical production setup includes:
 
-| Resource | Specification | Approximate Monthly Cost |
-|----------|--------------|-------------------------|
-| EKS Control Plane | Managed service | $73 |
-| EC2 Instances | 3x m6i.large | $210 |
-| NAT Gateway | Single AZ | $32 + data transfer |
-| EFS Storage | 100 GB | $30 |
-| Data Transfer | Variable | Varies |
+| Resource          | Specification   | Approximate Monthly Cost |
+| ----------------- | --------------- | ------------------------ |
+| EKS Control Plane | Managed service | $73                      |
+| EC2 Instances     | 3x m6i.large    | $210                     |
+| NAT Gateway       | Single AZ       | $32 + data transfer      |
+| EFS Storage       | 100 GB          | $30                      |
+| Data Transfer     | Variable        | Varies                   |
 
 Actual costs depend on usage patterns, data transfer volumes, and selected instance types.
 
@@ -308,12 +308,12 @@ Review the CHANGELOG for breaking changes before upgrading module versions. Foll
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 1.5.0 |
-| aws | >= 5.0 |
-| kubernetes | >= 2.29 |
-| helm | >= 3.1 |
+| Name       | Version  |
+| ---------- | -------- |
+| terraform  | >= 1.5.0 |
+| aws        | >= 5.0   |
+| kubernetes | >= 2.29  |
+| helm       | >= 3.1   |
 
 ## Documentation
 
@@ -374,29 +374,3 @@ This project utilizes the following open source modules:
 ---
 
 Maintained by [Quix](https://quix.io)
-
-<!-- BEGIN_TF_DOCS -->
-## Requirements
-
-No requirements.
-
-## Providers
-
-No providers.
-
-## Modules
-
-No modules.
-
-## Resources
-
-No resources.
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
-<!-- END_TF_DOCS -->

@@ -60,16 +60,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate terraform-docs for all modules
-        uses: terraform-docs/gh-actions@v1.3.0
-        with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          config-file: ""
-          git-push: false
-          recursive: true
-          recursive-path: modules
+      - name: Install terraform-docs
+        run: |
+          curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+
+      - name: Generate docs for all modules
+        run: |
+          for module in modules/quix-eks modules/quix-eks-dependencies; do
+            terraform-docs markdown table --output-file README.md --output-mode inject "$module"
+          done
 
       - name: Commit and push docs
         run: |
