@@ -1,4 +1,4 @@
-name: quix-aks module CI/CD
+name: terraform-quixplatform-aws  CI/CD
 
 on:
   push:
