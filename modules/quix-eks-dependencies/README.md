@@ -64,7 +64,7 @@ No modules.
 | <a name="input_nlb_controller_service_account"></a> [nlb\_controller\_service\_account](#input\_nlb\_controller\_service\_account) | Service account used by the AWS Load Balancer Controller | `string` | `"aws-load-balancer-controller"` | no |
 | <a name="input_oidc_provider_arn"></a> [oidc\_provider\_arn](#input\_oidc\_provider\_arn) | ARN of the OIDC Provider for the EKS cluster | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region where the cluster lives | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources created by this module | `map(string)` | <pre>{<br/>  "Customer": "Quix",<br/>  "Environment": "Production"<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to all resources created by this module | `map(string)` | <pre>{<br>  "Customer": "Quix",<br>  "Environment": "Production"<br>}</pre> | no |
 
 ## Outputs
 
