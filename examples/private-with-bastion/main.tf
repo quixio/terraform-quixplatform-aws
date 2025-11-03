@@ -292,7 +292,7 @@ output "instructions" {
        cd /opt/terraform
        git clone <your-repo-url>
 
-    4. Navigate to kubernetes-dependencies configuration:
+    4. Navigate to quix-eks-dependencies configuration:
        cd <your-repo>/k8s-dependencies
 
     5. Run terraform:

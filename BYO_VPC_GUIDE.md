@@ -251,7 +251,7 @@ This migration requires **recreating the cluster**. Zero-downtime migration is n
 
 ## Complete Example
 
-See the complete example at [`examples/byo-vpc/`](examples/byo-vpc/)
+See the complete example at [`examples/public-cluster-byo-vpc/`](examples/public-cluster-byo-vpc/)
 
 ## Internal Architecture
 

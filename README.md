@@ -28,7 +28,7 @@ Creates and manages Amazon EKS (Elastic Kubernetes Service) clusters with compre
 
 [View module documentation](modules/quix-eks/)
 
-#### kubernetes-dependencies
+#### quix-eks-dependencies
 Deploys essential Kubernetes controllers, operators, and add-ons required for production workloads.
 
 **Key capabilities:**
@@ -38,7 +38,7 @@ Deploys essential Kubernetes controllers, operators, and add-ons required for pr
 - Pre-configured storage classes for common use cases
 - Helm chart management
 
-[View module documentation](modules/kubernetes-dependencies/)
+[View module documentation](modules/quix-eks-dependencies/)
 
 ## Getting Started
 
@@ -86,8 +86,8 @@ module "eks" {
   }
 }
 
-module "kubernetes_dependencies" {
-  source = "./modules/kubernetes-dependencies"
+module "quix_eks_dependencies" {
+  source = "./modules/quix-eks-dependencies"
 
   cluster_name            = module.eks.cluster_name
   region                  = "us-east-1"
@@ -230,7 +230,7 @@ Complete working examples are available in the `examples/` directory:
 
 - **public-cluster** - Standard EKS cluster with public API endpoint
 - **private-with-bastion** - Private cluster with bastion host for secure management
-- **byo-vpc** - Integration with existing VPC infrastructure
+- **public-cluster-byo-vpc** - Integration with existing VPC infrastructure
 
 Each example includes detailed documentation and can be deployed directly for testing or used as templates for production deployments.
 

@@ -43,8 +43,8 @@ provider "helm" {
   }
 }
 
-module "kubernetes_dependencies" {
-  source = "../../modules/kubernetes-dependencies"
+module "quix_eks_dependencies" {
+  source = "../../modules/quix-eks-dependencies"
 
   cluster_name             = module.eks.cluster_name
   region                   = "eu-central-1"
