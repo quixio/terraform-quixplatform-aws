@@ -15,35 +15,75 @@ variable "amazon_container_id" {
 ################################################################################
 # Networking
 ################################################################################
-variable "vpc_cidr" {
-  description = "The VPC CIDR"
+
+# BYO (Bring Your Own) VPC options
+variable "create_vpc" {
+  description = "Whether to create a new VPC. Set to false to use an existing VPC"
+  type        = bool
+  default     = true
+}
+
+variable "vpc_id" {
+  description = "ID of existing VPC. Required when create_vpc is false"
   type        = string
+  default     = null
+}
+
+variable "private_subnet_ids" {
+  description = "List of existing private subnet IDs. Required when create_vpc is false"
+  type        = list(string)
+  default     = []
+}
+
+variable "public_subnet_ids" {
+  description = "List of existing public subnet IDs. Required when create_vpc is false"
+  type        = list(string)
+  default     = []
+}
+
+# VPC creation options (only used when create_vpc is true)
+variable "vpc_cidr" {
+  description = "The VPC CIDR. Required when create_vpc is true"
+  type        = string
+  default     = null
 }
 
 variable "azs" {
-  description = "The number of availability zones for the cluster"
+  description = "The number of availability zones for the cluster. Required when create_vpc is true"
   type        = number
+  default     = null
+}
 
+variable "private_subnets" {
+  description = "The private subnet CIDRs. Required when create_vpc is true"
+  type        = list(string)
+  default     = []
+}
+
+variable "public_subnets" {
+  description = "The public subnet CIDRs. Required when create_vpc is true"
+  type        = list(string)
+  default     = []
 }
 
 variable "singleaz" {
   description = "The availability zone name to pin single-AZ resources (e.g., efs/mnt)"
   type        = string
   default     = null
-
 }
 
-
-variable "private_subnets" {
-  description = "The private subnets"
-  type        = list(string)
-
+# NAT Gateway configuration (only used when create_vpc is true)
+variable "enable_nat_gateway" {
+  description = "Whether to create a single NAT Gateway for private subnets. Only used when create_vpc is true"
+  type        = bool
+  default     = true
 }
 
-variable "public_subnets" {
-  description = "The public subnets"
-  type        = list(string)
-
+# VPC endpoints
+variable "create_s3_endpoint" {
+  description = "Whether to create S3 VPC endpoint. Set to false if endpoint already exists"
+  type        = bool
+  default     = true
 }
 ################################################################################
 # Cluster config
@@ -54,23 +94,10 @@ variable "cluster_name" {
   default     = "Cluster"
 }
 
-variable "instance_size" {
-  description = "The instance size for the EKS cluster"
-  type        = list(string)
-  default     = ["m6i.large"]
-}
-
-
 variable "cluster_version" {
   description = "Kubernetes `<major>.<minor>` version to use for the EKS cluster (i.e.: `1.31`)"
   type        = string
   default     = "1.32"
-}
-
-variable "disk_size" {
-  description = "The disk size in GB for the EKS worker nodes"
-  type        = number
-  default     = 75
 }
 
 ################################################################################
@@ -251,16 +278,6 @@ variable "cert_manager_service_account" {
   description = "Service account name for cert-manager"
   type        = string
   default     = "cert-manager"
-}
-
-################################################################################
-# Ansible driver installation (optional)
-################################################################################
-
-variable "enable_ansible_install" {
-  description = "If true, generate playbook and run Ansible to install drivers"
-  type        = bool
-  default     = false
 }
 
 ################################################################################

@@ -32,8 +32,8 @@ module "eks" {
     }
   }
 
-  vpc_id                                   = module.vpc.vpc_id
-  subnet_ids                               = module.vpc.private_subnets
+  vpc_id                                   = local.vpc_id
+  subnet_ids                               = local.private_subnet_ids
   enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
   cluster_endpoint_public_access           = var.cluster_endpoint_public_access
   node_security_group_additional_rules = {
@@ -67,7 +67,7 @@ module "eks" {
     disk_size                  = pool.disk_size
     create_launch_template     = false
     use_custom_launch_template = false
-    subnet_ids                 = var.singleaz != null ? [local.private_subnets_by_az[var.singleaz]] : module.vpc.private_subnets
+    subnet_ids                 = var.singleaz != null ? [local.private_subnets_by_az[var.singleaz]] : local.private_subnet_ids
     labels                     = pool.labels
     taints                     = pool.taints
     }

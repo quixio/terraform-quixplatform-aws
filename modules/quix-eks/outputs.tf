@@ -14,22 +14,22 @@ output "command_output" {
 
 output "vpc_id" {
   description = "The ID of the VPC"
-  value       = module.vpc.vpc_id
+  value       = local.vpc_id
 }
 
 output "vpc_cidr" {
   description = "The CIDR block of the VPC"
-  value       = var.vpc_cidr
+  value       = var.create_vpc ? var.vpc_cidr : data.aws_vpc.existing[0].cidr_block
 }
 
 output "private_subnets" {
   description = "List of IDs of private subnets"
-  value       = module.vpc.private_subnets
+  value       = local.private_subnet_ids
 }
 
 output "public_subnets" {
   description = "List of IDs of public subnets"
-  value       = module.vpc.public_subnets
+  value       = local.public_subnet_ids
 }
 
 ################################################################################
@@ -38,7 +38,7 @@ output "public_subnets" {
 
 output "vpc_endpoints" {
   description = "Array containing the full resource object and attributes for all endpoints created"
-  value       = module.vpc_endpoints.endpoints
+  value       = var.create_s3_endpoint ? module.vpc_endpoints[0].endpoints : null
 }
 
 ################################################################################

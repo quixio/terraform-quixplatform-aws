@@ -65,7 +65,6 @@ module "eks" {
 
   # Cluster settings
   cluster_version = "1.34"
-  instance_size   = ["m6i.large"]
 
   # API endpoint and admin permissions
   cluster_endpoint_public_access           = true
@@ -74,7 +73,6 @@ module "eks" {
   # Optional features (disabled by default for public example)
   create_route53_zone      = false
   create_cert_manager_role = false
-  enable_ansible_install   = false
 
   # EBS CSI (IRSA)
   attach_kms_permissions_to_ebs_role = true
