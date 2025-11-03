@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: ["modules/quix-aks", "modules/tiered-storage"]
+        module: ["modules/quix-eks", "modules/quix-eks-dependencies"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
