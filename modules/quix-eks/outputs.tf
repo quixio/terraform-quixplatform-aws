@@ -134,3 +134,13 @@ output "cluster_certificate_authority_data" {
   value       = module.eks.cluster_certificate_authority_data
 }
 
+output "cluster_security_group_id" {
+  description = "Security group ID attached to the EKS cluster control plane"
+  value       = module.eks.cluster_security_group_id
+}
+
+output "node_security_group_id" {
+  description = "Security group ID attached to the EKS nodes"
+  value       = module.eks.node_security_group_id
+}
+

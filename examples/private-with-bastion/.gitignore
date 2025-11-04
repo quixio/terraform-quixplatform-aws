@@ -1,0 +1,27 @@
+# Terraform temporary directory for bastion deployment
+.terraform-bastion/
+
+# Standard Terraform ignores
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.lock.hcl
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Environment variables
+*.tfvars
+*.tfvars.json
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI configuration files
+.terraformrc
+terraform.rc
