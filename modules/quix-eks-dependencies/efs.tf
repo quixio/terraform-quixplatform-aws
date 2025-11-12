@@ -78,7 +78,7 @@ resource "helm_release" "efs_csi" {
 ################################################################################
 
 resource "kubernetes_storage_class_v1" "efs" {
-  count = var.create_efs_storage_class && var.enable_efs_csi_addon ? 1 : 0
+  count = var.create_efs_storage_class ? 1 : 0
 
   metadata {
     name = var.efs_storage_class_name
@@ -101,29 +101,5 @@ resource "kubernetes_storage_class_v1" "efs" {
       condition     = var.efs_file_system_id != null && var.efs_file_system_id != ""
       error_message = "efs_file_system_id must be provided when create_efs_storage_class is enabled."
     }
-  }
-}
-
-################################################################################
-# Kubernetes StorageClass for EBS (gp3)
-################################################################################
-
-resource "kubernetes_storage_class_v1" "ebs" {
-  count = var.create_ebs_storage_class ? 1 : 0
-
-  metadata {
-    name = var.ebs_storage_class_name
-    annotations = var.ebs_storage_class_is_default ? {
-      "storageclass.kubernetes.io/is-default-class" = "true"
-    } : null
-  }
-
-  storage_provisioner    = "ebs.csi.aws.com"
-  reclaim_policy         = var.ebs_storage_class_reclaim_policy
-  volume_binding_mode    = var.ebs_storage_class_volume_binding_mode
-  allow_volume_expansion = var.ebs_storage_class_allow_volume_expansion
-
-  parameters = {
-    type = var.ebs_volume_type
   }
 }
