@@ -1,0 +1,10 @@
+# Copy this file to terraform.tfvars and fill in your values
+
+# Existing VPC configuration
+vpc_id                 = "vpc-xxxxxxxxxxxxxxxxx"
+private_route_table_id = "rtb-xxxxxxxxxxxxxxxxx"  # Route table with NAT Gateway
+public_route_table_id  = "rtb-xxxxxxxxxxxxxxxxx"  # Route table with Internet Gateway
+
+# Cluster names (optional - defaults provided)
+control_cluster_name     = "control"
+deployments_cluster_name = "deployments"
