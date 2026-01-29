@@ -66,14 +66,15 @@ module "eks" {
   # EBS CSI (IRSA)
   attach_kms_permissions_to_ebs_role = true
 
-  # Dynamic node pools
+  # Single node pool for all workloads (platform services + customer deployments)
+  # You can add multiple pools with quix.io/node-purpose labels if workload separation is needed
+  # Valid label values: "platform-services", "customer-deployments"
   node_pools = {
-    platform = {
-      name          = "platform"
-      node_count    = 3
+    workloads = {
+      name          = "workloads"
+      node_count    = 4
       instance_size = "r6i.xlarge"
       disk_size     = 100
-      labels        = { "quix.io/node-purpose" = "platform-services" }
     }
   }
 

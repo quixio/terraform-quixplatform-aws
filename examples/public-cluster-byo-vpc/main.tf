@@ -122,7 +122,8 @@ module "eks" {
   # EBS CSI (IRSA)
   attach_kms_permissions_to_ebs_role = true
 
-  # Dynamic node pools
+  # Separate node pools for workload isolation (optional in single-cluster setups)
+  # Use quix.io/node-purpose labels to schedule workloads on specific pools
   node_pools = {
     platform = {
       name          = "platform"

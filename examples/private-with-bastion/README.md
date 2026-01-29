@@ -129,14 +129,14 @@ Subsequent Runs (deploy_k8s_dependencies = false):
 
 **Before** (with bastion):
 - EKS cluster: ~$73/month
-- 2x m6i.large nodes: ~$140/month
+- 4x r6i.xlarge nodes (workloads pool): ~$560/month
 - t3.small bastion: ~$15/month
-- **Total: ~$228/month**
+- **Total: ~$648/month**
 
 **After** (bastion removed):
 - EKS cluster: ~$73/month
-- 2x m6i.large nodes: ~$140/month
-- **Total: ~$213/month** (saves ~$15/month)
+- 4x r6i.xlarge nodes (workloads pool): ~$560/month
+- **Total: ~$633/month** (saves ~$15/month)
 
 ## Accessing the Private Cluster
 
