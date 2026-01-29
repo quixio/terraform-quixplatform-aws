@@ -124,29 +124,19 @@ module "eks" {
 
   # Dynamic node pools
   node_pools = {
-    default = {
-      name          = "default"
+    platform = {
+      name          = "platform"
       node_count    = 3
-      instance_size = "m6i.large"
-      disk_size     = 75
-      labels        = {}
-      taints        = []
+      instance_size = "r6i.xlarge"
+      disk_size     = 100
+      labels        = { "quix.io/node-purpose" = "platform-services" }
     }
-    quix_controller = {
-      name          = "quixcontroller"
-      node_count    = 1
-      instance_size = "m6i.large"
-      disk_size     = 75
-      taints        = [{ key = "dedicated", value = "controller", effect = "NO_SCHEDULE" }]
-      labels        = { role = "controller" }
-    }
-    quix_deployments = {
-      name          = "quixdeployment"
-      node_count    = 1
-      instance_size = "m6i.large"
-      disk_size     = 75
-      taints        = [{ key = "dedicated", value = "controller", effect = "NO_SCHEDULE" }]
-      labels        = { role = "controller" }
+    deployments = {
+      name          = "deployments"
+      node_count    = 3
+      instance_size = "r6i.xlarge"
+      disk_size     = 100
+      labels        = { "quix.io/node-purpose" = "customer-deployments" }
     }
   }
 

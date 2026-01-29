@@ -68,13 +68,12 @@ module "eks" {
 
   # Dynamic node pools
   node_pools = {
-    default = {
-      name          = "default"
-      node_count    = 2
-      instance_size = "m6i.large"
-      disk_size     = 75
-      labels        = {}
-      taints        = []
+    platform = {
+      name          = "platform"
+      node_count    = 3
+      instance_size = "r6i.xlarge"
+      disk_size     = 100
+      labels        = { "quix.io/node-purpose" = "platform-services" }
     }
   }
 

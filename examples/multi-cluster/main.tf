@@ -56,7 +56,7 @@ module "control" {
   source = "../../modules/quix-eks"
 
   cluster_name    = var.control_cluster_name
-  cluster_version = "1.33"
+  cluster_version = "1.34"
   region          = local.region
 
   # Use existing VPC with our new subnets
@@ -73,17 +73,19 @@ module "control" {
   enable_cluster_creator_admin_permissions = true
 
   node_pools = {
-    default = {
-      name          = "default"
+    platform = {
+      name          = "platform"
       node_count    = 3
-      instance_size = "m6i.large"
-      disk_size     = 75
+      instance_size = "r6i.xlarge"
+      disk_size     = 100
+      labels        = { "quix.io/node-purpose" = "platform-services" }
     }
   }
 
   tags = {
     Environment = "production"
     Cluster     = var.control_cluster_name
+    Role        = "control-plane"
   }
 }
 
@@ -131,7 +133,7 @@ module "deployments" {
   source = "../../modules/quix-eks"
 
   cluster_name    = var.deployments_cluster_name
-  cluster_version = "1.33"
+  cluster_version = "1.34"
   region          = local.region
 
   # Use existing VPC with our new subnets
@@ -148,17 +150,19 @@ module "deployments" {
   enable_cluster_creator_admin_permissions = true
 
   node_pools = {
-    default = {
-      name          = "default"
+    deployments = {
+      name          = "deployments"
       node_count    = 3
-      instance_size = "m6i.large"
-      disk_size     = 75
+      instance_size = "r6i.xlarge"
+      disk_size     = 100
+      labels        = { "quix.io/node-purpose" = "customer-deployments" }
     }
   }
 
   tags = {
     Environment = "production"
     Cluster     = var.deployments_cluster_name
+    Role        = "data-plane"
   }
 }
 
