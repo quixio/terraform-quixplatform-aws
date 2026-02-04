@@ -6,22 +6,19 @@
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.0" //21 changes some attributes
+  version = "~> 21.0"
 
-  cluster_name                = var.cluster_name
-  cluster_version             = var.cluster_version
+  name                        = var.cluster_name
+  kubernetes_version          = var.cluster_version
   create_cloudwatch_log_group = false
-  cluster_enabled_log_types   = []
+  enabled_log_types           = []
 
   # EKS Addons
-  cluster_addons = {
-    coredns    = {}
-    kube-proxy = {}
-    aws-ebs-csi-driver = {
-      service_account_role_arn    = aws_iam_role.ebs_csi.arn
-      resolve_conflicts_on_update = "OVERWRITE"
-    }
+  # before_compute = true ensures these are created BEFORE node groups
+  # This is critical - nodes need vpc-cni to get IPs and become Ready
+  addons = {
     vpc-cni = {
+      before_compute = true
       configuration_values = jsonencode({
         env = {
           # Reference docs https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html
@@ -30,12 +27,22 @@ module "eks" {
         }
       }),
     }
+    kube-proxy = {
+      before_compute = true
+    }
+    coredns = {
+      before_compute = true
+    }
+    aws-ebs-csi-driver = {
+      service_account_role_arn    = aws_iam_role.ebs_csi.arn
+      resolve_conflicts_on_update = "OVERWRITE"
+    }
   }
 
   vpc_id                                   = local.vpc_id
   subnet_ids                               = local.private_subnet_ids
   enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
-  cluster_endpoint_public_access           = var.cluster_endpoint_public_access
+  endpoint_public_access                   = var.cluster_endpoint_public_access
   node_security_group_additional_rules = {
     ingress_self_all = {
       description = "Node to node all ports/protocols"
@@ -69,7 +76,11 @@ module "eks" {
     use_custom_launch_template = false
     subnet_ids                 = var.singleaz != null ? [local.private_subnets_by_az[var.singleaz]] : local.private_subnet_ids
     labels                     = pool.labels
-    taints                     = pool.taints
+    taints = { for idx, taint in pool.taints : "${taint.key}-${idx}" => {
+      key    = taint.key
+      value  = taint.value
+      effect = taint.effect
+    } }
     }
   }
 

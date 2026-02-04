@@ -38,12 +38,12 @@ resource "aws_efs_file_system" "this" {
 ################################################################################
 
 resource "aws_efs_mount_target" "this" {
-  # Use AZ names (known at plan) as keys; pick one subnet per AZ at apply
-  for_each = var.singleaz == null ? { for az in local.azs : az => true } : { for az in [var.singleaz] : az => true }
+  # Use count since list length is known at plan time, even if values aren't
+  count = length(local.efs_mount_subnet_ids)
 
   file_system_id  = aws_efs_file_system.this.id
   security_groups = [module.eks.cluster_primary_security_group_id, module.eks.node_security_group_id]
-  subnet_id       = local.private_subnets_by_az[each.key]
+  subnet_id       = local.efs_mount_subnet_ids[count.index]
 }
 
 
