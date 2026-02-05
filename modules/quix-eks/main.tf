@@ -17,11 +17,13 @@ locals {
 
   # For EFS mount targets: use subnet IDs as keys (known at plan time)
   # This avoids the for_each unknown key issue when using BYO VPC
-  # When singleaz is set, EFS is OneZone and needs only one mount target
-  # For BYO VPC with singleaz, user must pass only the desired subnet(s)
+  # When singleaz is set, EFS is OneZone and needs only one mount target in that AZ
   efs_mount_subnet_ids = var.create_vpc ? (
     var.singleaz != null ? [module.vpc[0].private_subnets[index(module.vpc[0].azs, var.singleaz)]] : module.vpc[0].private_subnets
-  ) : var.private_subnet_ids
+  ) : (
+    # For BYO VPC: filter subnets to only those in singleaz (if set)
+    var.singleaz != null ? [for subnet in data.aws_subnet.existing_private : subnet.id if subnet.availability_zone == var.singleaz] : var.private_subnet_ids
+  )
 
   tags = merge(
     var.tags,
