@@ -50,7 +50,7 @@ data "aws_route_tables" "existing_public" {
 module "vpc" {
   count   = var.create_vpc ? 1 : 0
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
+  version = "5.17.0"
 
   name = "${var.cluster_name}-net"
   cidr = var.vpc_cidr
@@ -77,6 +77,7 @@ module "vpc" {
 # Local values to unify VPC resources
 locals {
   vpc_id             = var.create_vpc ? module.vpc[0].vpc_id : var.vpc_id
+  vpc_cidr           = var.create_vpc ? module.vpc[0].vpc_cidr_block : data.aws_vpc.existing[0].cidr_block
   private_subnet_ids = var.create_vpc ? module.vpc[0].private_subnets : var.private_subnet_ids
   public_subnet_ids  = var.create_vpc ? module.vpc[0].public_subnets : var.public_subnet_ids
 

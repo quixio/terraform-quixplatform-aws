@@ -85,6 +85,12 @@ variable "create_s3_endpoint" {
   type        = bool
   default     = true
 }
+
+variable "create_private_eks_endpoints" {
+  description = "Whether to create VPC endpoints for private EKS clusters (ecr.api, ecr.dkr, sts, ec2, logs). Required for fully private clusters"
+  type        = bool
+  default     = false
+}
 ################################################################################
 # Cluster config
 ################################################################################
