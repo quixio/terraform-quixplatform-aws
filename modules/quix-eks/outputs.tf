@@ -38,7 +38,7 @@ output "public_subnets" {
 
 output "vpc_endpoints" {
   description = "Array containing the full resource object and attributes for all endpoints created"
-  value       = var.create_s3_endpoint ? module.vpc_endpoints[0].endpoints : null
+  value       = var.create_s3_endpoint ? module.vpc_endpoints_gateway[0].endpoints : null
 }
 
 ################################################################################
