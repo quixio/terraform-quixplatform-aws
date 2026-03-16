@@ -295,3 +295,13 @@ variable "enable_credentials_fetch" {
   type        = bool
   default     = false
 }
+
+################################################################################
+# Additional Security Groups
+################################################################################
+
+variable "cluster_additional_security_group_ids" {
+  description = "Additional security group IDs to attach to the EKS cluster control plane ENIs. Useful to allow access from peered VPCs"
+  type        = list(string)
+  default     = []
+}

@@ -43,6 +43,7 @@ module "eks" {
   subnet_ids                               = local.private_subnet_ids
   enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
   endpoint_public_access                   = var.cluster_endpoint_public_access
+  additional_security_group_ids            = var.cluster_additional_security_group_ids
   node_security_group_additional_rules = {
     ingress_self_all = {
       description = "Node to node all ports/protocols"
