@@ -178,3 +178,9 @@ variable "ebs_volume_type" {
   type        = string
   default     = "gp3"
 }
+
+variable "ebs_volume_encrypted" {
+  description = "Whether EBS volumes created by the storage class should be encrypted"
+  type        = bool
+  default     = true
+}
