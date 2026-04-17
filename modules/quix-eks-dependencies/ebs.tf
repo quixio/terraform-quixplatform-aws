@@ -18,6 +18,7 @@ resource "kubernetes_storage_class_v1" "ebs" {
   allow_volume_expansion = var.ebs_storage_class_allow_volume_expansion
 
   parameters = {
-    type = var.ebs_volume_type
+    type      = var.ebs_volume_type
+    encrypted = tostring(var.ebs_volume_encrypted)
   }
 }
