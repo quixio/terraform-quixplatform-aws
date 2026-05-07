@@ -23,22 +23,32 @@ provider "aws" {
 ################################################################################
 # Kubernetes and Helm Providers
 ################################################################################
-
-data "aws_eks_cluster_auth" "this" {
-  name = "${cluster_name}"
-}
+# Use exec plugin (not aws_eks_cluster_auth) so the token is fetched fresh at
+# apply time. The data source token expires after ~15 min, which is shorter
+# than a full cluster + node groups + addons creation, causing "Unauthorized"
+# errors in the dependencies module on the first apply.
 
 provider "kubernetes" {
   host                   = "${cluster_endpoint}"
   cluster_ca_certificate = base64decode("${cluster_ca_data}")
-  token                  = data.aws_eks_cluster_auth.this.token
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", "${cluster_name}", "--region", "${region}"]
+  }
 }
 
 provider "helm" {
   kubernetes = {
     host                   = "${cluster_endpoint}"
     cluster_ca_certificate = base64decode("${cluster_ca_data}")
-    token                  = data.aws_eks_cluster_auth.this.token
+
+    exec = {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args        = ["eks", "get-token", "--cluster-name", "${cluster_name}", "--region", "${region}"]
+    }
   }
 }
 

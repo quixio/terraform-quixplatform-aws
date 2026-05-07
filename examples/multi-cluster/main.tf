@@ -37,16 +37,12 @@ locals {
 }
 
 # -----------------------------------------------------------------------------
-# Auth data sources for each cluster
+# Provider auth note
 # -----------------------------------------------------------------------------
-
-data "aws_eks_cluster_auth" "control" {
-  name = module.control.cluster_name
-}
-
-data "aws_eks_cluster_auth" "deployments" {
-  name = module.deployments.cluster_name
-}
+# We use the exec plugin (not aws_eks_cluster_auth) so the token is fetched
+# fresh at apply time. The data source token expires after ~15 min, which is
+# shorter than a full cluster + node groups + addons creation, causing
+# "Unauthorized" errors in the dependencies module on the first apply.
 
 # -----------------------------------------------------------------------------
 # Control Cluster
@@ -93,7 +89,12 @@ provider "kubernetes" {
   alias                  = "control"
   host                   = module.control.cluster_endpoint
   cluster_ca_certificate = base64decode(module.control.cluster_certificate_authority_data)
-  token                  = data.aws_eks_cluster_auth.control.token
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", module.control.cluster_name, "--region", local.region]
+  }
 }
 
 provider "helm" {
@@ -101,7 +102,12 @@ provider "helm" {
   kubernetes = {
     host                   = module.control.cluster_endpoint
     cluster_ca_certificate = base64decode(module.control.cluster_certificate_authority_data)
-    token                  = data.aws_eks_cluster_auth.control.token
+
+    exec = {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args        = ["eks", "get-token", "--cluster-name", module.control.cluster_name, "--region", local.region]
+    }
   }
 }
 
@@ -170,7 +176,12 @@ provider "kubernetes" {
   alias                  = "deployments"
   host                   = module.deployments.cluster_endpoint
   cluster_ca_certificate = base64decode(module.deployments.cluster_certificate_authority_data)
-  token                  = data.aws_eks_cluster_auth.deployments.token
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    args        = ["eks", "get-token", "--cluster-name", module.deployments.cluster_name, "--region", local.region]
+  }
 }
 
 provider "helm" {
@@ -178,7 +189,12 @@ provider "helm" {
   kubernetes = {
     host                   = module.deployments.cluster_endpoint
     cluster_ca_certificate = base64decode(module.deployments.cluster_certificate_authority_data)
-    token                  = data.aws_eks_cluster_auth.deployments.token
+
+    exec = {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      command     = "aws"
+      args        = ["eks", "get-token", "--cluster-name", module.deployments.cluster_name, "--region", local.region]
+    }
   }
 }
 
