@@ -18,6 +18,7 @@ resource "helm_release" "tigera_operator" {
     installation = {
       enabled            = true
       kubernetesProvider = "EKS"
+      flexVolumePath     = "None"
       cni = {
         type = "AmazonVPC"
       }
